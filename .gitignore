@@ -1,0 +1,131 @@
+# .gitignore for a .NET / Rider project
+# Generated to cover Visual Studio, JetBrains Rider, macOS and common artifacts
+
+# Build Folders
+[Bb]in/
+[Oo]bj/
+out/
+build/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+
+# Rider
+.idea/
+*.sln.iml
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+*.iml
+
+# Visual Studio Code
+.vscode/
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.assets.json
+# NuGet v3
+*.nuget.props
+*.nuget.targets
+
+# Dotnet publish
+*.Publish.xml
+*.pubxml
+
+# Rider / ReSharper caches
+_ReSharper*/
+*.DotSettings
+.cache/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userprefs
+*.ide
+
+# Mono
+*.pidb
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Generated files
+*.g.cs
+*.generated.cs
+*.Designer.cs
+*.Designer.*
+
+# Rider and IDE run configs
+.idea/
+*.run.xml
+
+# Coverage & test results
+coverage*
+*.coverage
+*.coveragexml
+TestResults/
+
+# Rider local history
+.idea/.idea_localhistory
+
+# dotnet user-secrets
+secrets.json
+
+# Runtime
+*.runtimeconfig.dev.json
+
+# packages folder (NuGet)
+**/packages/
+
+# Local tool and temp files
+*.swp
+*.swo
+*.tmp
+*.temp
+
+# Database files
+*.mdf
+*.ldf
+
+# IIS Express
+_IISExpress/
+
+# Azure DevOps
+.vscode/*_workbench
+
+# Other
+*.class
+*.psd
+*.db
+
+# Ignore compiled dll/exe from accidental inclusion (they live in bin/)
+*.dll
+*.exe
+
+# Keep this file tracked
+!.gitignore
+
