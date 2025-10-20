@@ -69,7 +69,10 @@ public class CarService
         }
 
         user.Balance -= car.Price;
+        user.BoughtCars.Add(car);
         _cars.Remove(car);
         Console.WriteLine($"✅ Поздравляем с покупкой {car.Name}! Ваш баланс: {user.Balance} KZT");
+        
+        
     }
 }

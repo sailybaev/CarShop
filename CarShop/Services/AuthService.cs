@@ -19,7 +19,7 @@ public class AuthService
 
         UserRole role = roleChoice == 2 ? UserRole.Admin : UserRole.Client;
 
-        _users.Add(new User(username, password, role, 100000));
+        _users.Add(new User(username, password, role, 100000, new List<Car>()));
         Console.WriteLine("✅ Пользователь зарегистрирован!");
     }
 

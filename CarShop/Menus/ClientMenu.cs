@@ -1,3 +1,4 @@
+using CarShop.Models;
 using CarShop.Services;
 
 namespace CarShop.Menus;
@@ -11,7 +12,8 @@ public static class ClientMenu
             Console.WriteLine("\n👤 Меню клиента:");
             Console.WriteLine("1 — Показать машины");
             Console.WriteLine("2 — Купить машину");
-            Console.WriteLine("3 — Выйти из аккаунта");
+            Console.WriteLine("3 — История покупок");
+            Console.WriteLine("4 — Выйти из аккаунта");
             Console.WriteLine("0 — Назад");
 
             Console.Write("➡️ Выберите действие: ");
@@ -26,8 +28,14 @@ public static class ClientMenu
                     carService.BuyCar(auth.LoggedInUser!);
                     break;
                 case "3":
+                    carService.ShowCars();
+                    break;
+                case "4":
                     auth.Logout();
                     return;
+                case "5":
+                    auth.LoggedInUser.Deposit();
+                    break;
                 case "0":
                     return;
                 default:
