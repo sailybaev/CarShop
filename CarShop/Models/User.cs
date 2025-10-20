@@ -13,6 +13,7 @@ namespace CarShop.Models
 
         public User(string username, string password, UserRole role, decimal balance = 0, List <Car>? BoughtCars = null)
         {
+            this.BoughtCars = BoughtCars ?? new List<Car>();
             Username = username;
             Password = password;
             Role = role;
