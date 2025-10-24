@@ -7,6 +7,8 @@ namespace CarShop;
 
 class Program
 {
+    
+    // TODO: Seinur sdelai integration with SQL
     static void Main(string[] args)
     {
         var authService = new AuthService();
