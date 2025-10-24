@@ -15,11 +15,26 @@ public class AuthService
         Console.Write("Введите пароль: ");
         string password = Console.ReadLine()!;
         Console.Write("Выберите роль (1 — Клиент, 2 — Админ): ");
-        int roleChoice = int.Parse(Console.ReadLine() ?? "1");
+
+        int roleChoice;
+        while (true)
+        {
+            var input = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                roleChoice = 1; 
+                break;
+            }
+
+            if (int.TryParse(input, out roleChoice) && (roleChoice == 1 || roleChoice == 2))
+                break;
+
+            Console.Write("Неверный ввод. Введите 1 для Клиента или 2 для Админа: ");
+        }
 
         UserRole role = roleChoice == 2 ? UserRole.Admin : UserRole.Client;
 
-        _users.Add(new User(username, password, role, 100000, new List<Car>()));
+        _users.Add(new User(username, password, role, 100000)); // Начальный баланс 100000 для клиентов
         Console.WriteLine("✅ Пользователь зарегистрирован!");
     }
 

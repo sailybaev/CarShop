@@ -32,7 +32,16 @@ namespace CarShop.Models
         public void Deposit()
         {
             Console.WriteLine("Popolnite balans:");
-            decimal newBalance = decimal.Parse(Console.ReadLine());
+
+            decimal newBalance;
+            while (true)
+            {
+                var input = Console.ReadLine();
+                if (decimal.TryParse(input, out newBalance) && newBalance > 0)
+                    break;
+                Console.WriteLine("Неверная сумма. Введите положительное число:");
+            }
+
             Balance += newBalance;
         }
     }

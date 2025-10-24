@@ -25,7 +25,15 @@ public class CarService
         Console.Write("Введите название машины: ");
         string name = Console.ReadLine()!;
         Console.Write("Введите цену машины: ");
-        decimal price = decimal.Parse(Console.ReadLine()!);
+
+        decimal price;
+        while (true)
+        {
+            var input = Console.ReadLine();
+            if (decimal.TryParse(input, out price) && price >= 0)
+                break;
+            Console.Write("Неверная цена. Введите положительное число: ");
+        }
 
         var car = new Car(_nextId++, name, price);
         _cars.Add(car);
@@ -35,7 +43,15 @@ public class CarService
     public void RemoveCar()
     {
         Console.Write("Введите ID машины для удаления: ");
-        int id = int.Parse(Console.ReadLine()!);
+
+        int id;
+        while (true)
+        {
+            var input = Console.ReadLine();
+            if (int.TryParse(input, out id) && id > 0)
+                break;
+            Console.Write("Неверный ID. Введите положительное целое число: ");
+        }
 
         var car = _cars.FirstOrDefault(c => c.Id == id);
         if (car != null)
@@ -53,7 +69,15 @@ public class CarService
     {
         ShowCars();
         Console.Write("Введите ID машины для покупки: ");
-        int id = int.Parse(Console.ReadLine()!);
+
+        int id;
+        while (true)
+        {
+            var input = Console.ReadLine();
+            if (int.TryParse(input, out id) && id > 0)
+                break;
+            Console.Write("Неверный ID. Введите положительное целое число: ");
+        }
 
         var car = _cars.FirstOrDefault(c => c.Id == id);
         if (car == null)
@@ -72,7 +96,7 @@ public class CarService
         user.BoughtCars.Add(car);
         _cars.Remove(car);
         Console.WriteLine($"✅ Поздравляем с покупкой {car.Name}! Ваш баланс: {user.Balance} KZT");
-        
-        
+
+
     }
 }
