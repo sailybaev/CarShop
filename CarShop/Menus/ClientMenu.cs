@@ -14,6 +14,7 @@ public static class ClientMenu
             Console.WriteLine("2 — Купить машину");
             Console.WriteLine("3 — История покупок");
             Console.WriteLine("4 — Выйти из аккаунта");
+            Console.WriteLine("5 — Deposit Cash");
             Console.WriteLine("0 — Назад");
 
             Console.Write("➡️ Выберите действие: ");
