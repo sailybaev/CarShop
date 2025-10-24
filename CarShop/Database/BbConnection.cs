@@ -1,7 +1,7 @@
 using Npgsql;
 
 namespace CarShop.Database;
-
+// Eto dlya bazy dannykh
 public class BbConnection
 {
     private readonly string _url;
