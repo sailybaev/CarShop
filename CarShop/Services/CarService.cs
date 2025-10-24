@@ -7,7 +7,7 @@ public class CarService
     private readonly List<Car> _cars = new();
     private int _nextId = 1;
 
-    public void ShowCars()
+    public void ShowCars() // Pokazat' spisok mashin
     {
         if (_cars.Count == 0)
         {
