@@ -13,6 +13,11 @@ public class AuthService
     {
         _db = db;
     }
+    
+    public AuthService()
+    {
+    }
+    
     private readonly List<User> _users = new();
     public User? LoggedInUser { get; private set; }
 
@@ -44,7 +49,7 @@ public class AuthService
 
         //_users.Add(new User(username, password, role, 100000)); // Начальный баланс 100000 для клиентов
         using var conn = _db.GetConnection();
-        using var sql2 = new NpgsqlCommand("INSERT INTO users(id,name,password,role) VALUES(@id,@name,@password,@role)", conn);
+        using var sql2 = new NpgsqlCommand("INSERT INTO users(username,password,role) VALUES(@name,@password,@role)", conn);
         sql2.Parameters.AddWithValue("@name", username);
         sql2.Parameters.AddWithValue("@password", password);
         sql2.Parameters.AddWithValue("@role", roleChoice);
@@ -62,7 +67,7 @@ public class AuthService
         try
         {
             using var conn = _db.GetConnection();
-            using var sql =  new NpgsqlCommand("SELECT id, username, password, role, balance FROM users WHERE username = @u AND password = @p LIMIT 1", conn);
+            using var sql =  new NpgsqlCommand("SELECT username, password, role, balance FROM users WHERE username = @u AND password = @p LIMIT 1", conn);
             sql.Parameters.AddWithValue("@u", username);
             sql.Parameters.AddWithValue("@p", password);
 
@@ -73,12 +78,19 @@ public class AuthService
                 return;
             }
 
-            int id = reader.GetInt32(0);
-            string usern = reader.GetString(1);
-            int role = reader.GetInt32(3);
-            decimal balance = reader.GetDecimal(4);
+            
+            string usern = reader.GetString(0);
+            string role = reader.GetString(2);
+            decimal balance = reader.GetDecimal(3);
 
-            LoggedInUser = new User(usern, password, (UserRole)role, balance);
+            UserRole rl = new UserRole();
+            
+            if (role == "1")
+                rl = UserRole.Client;
+            else if (role == "2")
+                rl = UserRole.Admin;
+            
+            LoggedInUser = new User(usern, password, rl, balance);
             Console.WriteLine($"Добро пожаловать, {LoggedInUser.Username} ({LoggedInUser.Role})!");
         }
         catch (Exception ex)

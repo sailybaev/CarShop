@@ -18,17 +18,17 @@ public class CarService
     public void ShowCars()
     {
         using var conn = _db.GetConnection();
-        if (_cars.Count == 0)
+        // isEmpty check SQL
+        using var sql = new NpgsqlCommand("SELECT brand, model, price, available FROM cars", conn);
+        using var res = sql.ExecuteReader();
+        if (!res.HasRows) 
         {
-            Console.WriteLine("Нет доступных машин.");
+            Console.WriteLine("❌ В наличии нет машин.");
             return;
         }
 
         Console.WriteLine("\n🚗 Список машин:");
-        //foreach (var car in _cars)
-           // Console.WriteLine(car);
-           using var sql = new NpgsqlCommand("SELECT brand, model, price FROM cars", conn);
-           using var res = sql.ExecuteReader();
+           
            while (res.Read())
            {
                bool available = (bool)res["available"];
@@ -57,7 +57,7 @@ public class CarService
                 break;
             Console.Write("Неверная цена. Введите положительное число: ");
         }
-        using var sql2 = new NpgsqlCommand("INSERT INTO cars (brand,mode,price) VALUES (@b,@m,@p)", conn);
+        using var sql2 = new NpgsqlCommand("INSERT INTO cars (brand,model,price,available) VALUES (@b,@m,@p,true)", conn);
         sql2.Parameters.AddWithValue("@b", brand);
         sql2.Parameters.AddWithValue("@m", model);
         sql2.Parameters.AddWithValue("@p", price);
@@ -80,21 +80,15 @@ public class CarService
                 break;
             Console.Write("Неверный ID. Введите положительное целое число: ");
         }
-
-        var car = _cars.FirstOrDefault(c => c.Id == id);
-        if (car != null)
-        {
+        using var conn = _db.GetConnection();
+        
             //_cars.Remove(car);
-            using var conn = _db.GetConnection();
-            using var sql3 = new NpgsqlCommand("DELETE FROM cars WHERE car_id = @id", conn);
+            //Thread.Sleep(6000);
+            using var sql3 = new NpgsqlCommand("DELETE FROM cars WHERE id = @id", conn);
             sql3.Parameters.AddWithValue("@id", id);
             sql3.ExecuteNonQuery();
             Console.WriteLine("✅ Машина удалена.");
-        }
-        else
-        {
-            Console.WriteLine("❌ Машина не найдена.");
-        }
+       
     }
 
     public void BuyCar(User user)
@@ -111,27 +105,13 @@ public class CarService
             Console.Write("Неверный ID. Введите положительное целое число: ");
         }
 
-        var car = _cars.FirstOrDefault(c => c.Id == id);
-        if (car == null)
-        {
-            Console.WriteLine("❌ Машина не найдена.");
-            return;
-        }
 
-        if (user.Balance < car.Price)
-        {
-            Console.WriteLine("❌ Недостаточно средств!");
-            return;
-        }
-
-        user.Balance -= car.Price;
-        user.BoughtCars.Add(car);
         //_cars.Remove(car);
         using  var conn = _db.GetConnection();
         using var sql4 = new NpgsqlCommand("UPDATE cars SET available = false WHERE car_id = @id", conn);
-        sql4.Parameters.AddWithValue("@id", car.Id);
+        sql4.Parameters.AddWithValue("@id", id);
         sql4.ExecuteNonQuery();
-        Console.WriteLine($"✅ Поздравляем с покупкой {car.Name}! Ваш баланс: {user.Balance} KZT");
+        Console.WriteLine($"✅ Поздравляем с покупкой ! Ваш баланс: {user.Balance} KZT");
 
 
     }
