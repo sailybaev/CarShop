@@ -1,12 +1,30 @@
 using CarShop.Enums;
 using CarShop.Models;
+using CarShop.Database;
+using Npgsql;
 
 namespace CarShop.Services;
 
 public class AuthService
 {
-    private readonly List<User> _users = new();
+    private readonly BbConnection _bbConnection;
     public User? LoggedInUser { get; private set; }
+
+    public AuthService(BbConnection bbConnection)
+    {
+        _bbConnection = bbConnection;
+    }
+
+    private static User MapUser(NpgsqlDataReader reader)
+    {
+        var username = reader.GetString(reader.GetOrdinal("username"));
+        var password = reader.GetString(reader.GetOrdinal("password"));
+        var roleStr = reader.GetString(reader.GetOrdinal("role"));
+        var balance = reader.GetDecimal(reader.GetOrdinal("balance"));
+
+        var role = Enum.TryParse<UserRole>(roleStr, out var r) ? r : UserRole.Client;
+        return new User(username, password, role, balance);
+    }
 
     public void Register()
     {
@@ -34,8 +52,29 @@ public class AuthService
 
         UserRole role = roleChoice == 2 ? UserRole.Admin : UserRole.Client;
 
-        _users.Add(new User(username, password, role, 100000)); // Начальный баланс 100000 для клиентов
-        Console.WriteLine("✅ Пользователь зарегистрирован!");
+        // Default starting balance for clients, 0 for admins
+        decimal startingBalance = role == UserRole.Client ? 100000m : 0m;
+
+        using var conn = _bbConnection.GetConnection();
+        using var cmd = new NpgsqlCommand(@"INSERT INTO users (username, password, role, balance) VALUES (@u, @p, @r, @b)", conn);
+        cmd.Parameters.AddWithValue("@u", username);
+        cmd.Parameters.AddWithValue("@p", password);
+        cmd.Parameters.AddWithValue("@r", role.ToString());
+        cmd.Parameters.AddWithValue("@b", startingBalance);
+
+        try
+        {
+            cmd.ExecuteNonQuery();
+            Console.WriteLine("✅ Пользователь зарегистрирован!");
+        }
+        catch (PostgresException ex) when (ex.SqlState == "23505") // unique_violation
+        {
+            Console.WriteLine("❌ Пользователь с таким именем уже существует.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Ошибка при регистрации: {ex.Message}");
+        }
     }
 
     public void Login()
@@ -45,9 +84,20 @@ public class AuthService
         Console.Write("Пароль: ");
         string password = Console.ReadLine()!;
 
-        var user = _users.FirstOrDefault(u => u.Username == username && u.Password == password);
+        using var conn = _bbConnection.GetConnection();
+        using var cmd = new NpgsqlCommand("SELECT username, password, role, balance FROM users WHERE username = @u LIMIT 1", conn);
+        cmd.Parameters.AddWithValue("@u", username);
 
-        if (user == null)
+        using var reader = cmd.ExecuteReader();
+        if (!reader.Read())
+        {
+            Console.WriteLine("❌ Неверные данные для входа!");
+            return;
+        }
+
+        var user = MapUser(reader);
+
+        if (user.Password != password)
         {
             Console.WriteLine("❌ Неверные данные для входа!");
             return;
@@ -71,4 +121,46 @@ public class AuthService
     }
 
     public bool IsAdmin() => LoggedInUser?.Role == UserRole.Admin;
+
+    public void Deposit()
+    {
+        if (LoggedInUser == null)
+        {
+            Console.WriteLine("⚠️ Вы не вошли в систему.");
+            return;
+        }
+
+        Console.WriteLine("Пополните баланс:");
+        decimal amount;
+        while (true)
+        {
+            var input = Console.ReadLine();
+            if (decimal.TryParse(input, out amount) && amount > 0)
+                break;
+            Console.WriteLine("Неверная сумма. Введите положительное число:");
+        }
+
+        using var conn = _bbConnection.GetConnection();
+        using var cmd = new NpgsqlCommand("UPDATE users SET balance = balance + @amt WHERE username = @u RETURNING balance", conn);
+        cmd.Parameters.AddWithValue("@amt", amount);
+        cmd.Parameters.AddWithValue("@u", LoggedInUser.Username);
+
+        try
+        {
+            var result = cmd.ExecuteScalar();
+            if (result != null && decimal.TryParse(result.ToString(), out var newBalance))
+            {
+                LoggedInUser.Balance = newBalance;
+                Console.WriteLine($"✅ Баланс пополнен. Новый баланс: {LoggedInUser.Balance} KZT");
+            }
+            else
+            {
+                Console.WriteLine("❌ Не удалось обновить баланс пользователя.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Ошибка при пополнении баланса: {ex.Message}");
+        }
+    }
 }

@@ -1,18 +1,24 @@
-﻿using System;
-using CarShop.Enums;
+﻿using CarShop.Enums;
 using CarShop.Menus;
 using CarShop.Services;
+using CarShop.Database;
 
 namespace CarShop;
 
 class Program
 {
-    
     // TODO: Seinur sdelai integration with SQL
-    static void Main(string[] args)
+    static void Main()
     {
-        var authService = new AuthService();
-        var carService = new CarService();
+        // Try to read connection string from environment, fall back to a reasonable default for local Postgres
+        var connectionString = "Host=localhost;Username=postgres;Password=postgres;Database=carshop";
+
+        var bbConnection = new BbConnection(connectionString);
+
+        DbInitializer.Initialize(bbConnection);
+
+        var authService = new AuthService(bbConnection);
+        var carService = new CarService(bbConnection);
 
         while (true)
         {
