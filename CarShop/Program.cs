@@ -1,6 +1,8 @@
 ﻿using System;
+using CarShop.Database;
 using CarShop.Enums;
 using CarShop.Menus;
+using CarShop.Models;
 using CarShop.Services;
 
 namespace CarShop;
@@ -13,6 +15,11 @@ class Program
     {
         var authService = new AuthService();
         var carService = new CarService();
+        var db = new BbConnection(
+            "Host=ep-autumn-flower-a83va1s6-pooler.eastus2.azure.neon.tech;Username=neondb_owner;Password=npg_yAqlmK5gkoJ9;Database=neondb");
+        var authRep = new AuthService(db);
+        var carRep = new CarService(db);
+        
 
         while (true)
         {

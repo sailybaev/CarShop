@@ -1,19 +1,19 @@
 using Npgsql;
 
 namespace CarShop.Database;
-// Eto dlya bazy dannykh
+
 public class BbConnection
 {
-    private readonly string _url;
-    
-    public BbConnection(string url)
+    private readonly string _connStr;
+
+    public BbConnection(string connStr)
     {
-        _url = url;
+        _connStr = connStr;
     }
 
     public NpgsqlConnection GetConnection()
     {
-        var conn = new NpgsqlConnection(_url);
+        var conn = new NpgsqlConnection(_connStr);
         conn.Open();
         return conn;
     }
