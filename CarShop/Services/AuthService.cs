@@ -49,10 +49,11 @@ public class AuthService
 
         //_users.Add(new User(username, password, role, 100000)); // Начальный баланс 100000 для клиентов
         using var conn = _db.GetConnection();
-        using var sql2 = new NpgsqlCommand("INSERT INTO users(username,password,role) VALUES(@name,@password,@role)", conn);
+        using var sql2 = new NpgsqlCommand("INSERT INTO users(username,password,role,balans ) VALUES(@name,@password,@role,@balans)", conn);
         sql2.Parameters.AddWithValue("@name", username);
         sql2.Parameters.AddWithValue("@password", password);
         sql2.Parameters.AddWithValue("@role", roleChoice);
+        sql2.Parameters.AddWithValue("@balans", 100000);
         sql2.ExecuteNonQuery();
         Console.WriteLine("✅ Пользователь зарегистрирован!");
     }
@@ -78,7 +79,7 @@ public class AuthService
                 return;
             }
 
-            
+            int index = 1;
             string usern = reader.GetString(0);
             string role = reader.GetString(2);
             decimal balance = reader.GetDecimal(3);
@@ -90,7 +91,7 @@ public class AuthService
             else if (role == "2")
                 rl = UserRole.Admin;
             
-            LoggedInUser = new User(usern, password, rl, balance);
+            LoggedInUser = new User(index++, usern, password, rl, balance);
             Console.WriteLine($"Добро пожаловать, {LoggedInUser.Username} ({LoggedInUser.Role})!");
         }
         catch (Exception ex)

@@ -18,7 +18,7 @@ public class CarService
     public void ShowCars()
     {
         using var conn = _db.GetConnection();
-        // isEmpty check SQL
+        
         using var sql = new NpgsqlCommand("SELECT brand, model, price, available FROM cars", conn);
         using var res = sql.ExecuteReader();
         if (!res.HasRows) 
@@ -34,7 +34,7 @@ public class CarService
                bool available = (bool)res["available"];
                if(available)
                {
-                   Console.WriteLine($"{res["brand"]} {res["model"]}- {res["price"]} kzt");
+                   Console.WriteLine($"{res["car_id"]}.{res["brand"]} {res["model"]} - {res["price"]} kzt");
                }
            }
           
@@ -115,4 +115,5 @@ public class CarService
 
 
     }
+    
 }

@@ -29,7 +29,7 @@ public static class ClientMenu
                     carService.BuyCar(auth.LoggedInUser!);
                     break;
                 case "3":
-                    carService.ShowBoughtCars();
+                    auth.LoggedInUser.ShowHistory();
                     break;
                 case "4":
                     auth.Logout();
