@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using CarShop.Enums;
 using CarShop.Menus;
 using CarShop.Services;
 
 namespace CarShop;
-
+//1
 class Program
 {
     static void Main(string[] args)
