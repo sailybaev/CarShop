@@ -29,13 +29,13 @@ public static class ClientMenu
                     carService.BuyCar(auth.LoggedInUser!);
                     break;
                 case "3":
-                    auth.LoggedInUser.ShowHistory();
+                    auth.ShowHistory();
                     break;
                 case "4":
                     auth.Logout();
                     return;
                 case "5":
-                    auth.LoggedInUser.Deposit();
+                    auth.Deposit();
                     break;
                 case "0":
                     return;

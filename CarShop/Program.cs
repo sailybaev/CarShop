@@ -19,7 +19,6 @@ class Program
             "Host=ep-autumn-flower-a83va1s6-pooler.eastus2.azure.neon.tech;Username=neondb_owner;Password=npg_yAqlmK5gkoJ9;Database=neondb");
         var authService = new AuthService(db);
         var carService = new CarService(db);
-        var User = new User(db);
         
 
         while (true)

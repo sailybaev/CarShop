@@ -9,15 +9,16 @@ namespace CarShop.Services;
 public class AuthService
 {
     private readonly BbConnection _db;
+
     public AuthService(BbConnection db)
     {
         _db = db;
     }
-    
+
     public AuthService()
     {
     }
-    
+
     private readonly List<User> _users = new();
     public User? LoggedInUser { get; private set; }
 
@@ -35,7 +36,7 @@ public class AuthService
             var input = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(input))
             {
-                roleChoice = 1; 
+                roleChoice = 1;
                 break;
             }
 
@@ -49,7 +50,9 @@ public class AuthService
 
         //_users.Add(new User(username, password, role, 100000)); // Начальный баланс 100000 для клиентов
         using var conn = _db.GetConnection();
-        using var sql2 = new NpgsqlCommand("INSERT INTO users(username,password,role,balans ) VALUES(@name,@password,@role,@balans)", conn);
+        using var sql2 =
+            new NpgsqlCommand(
+                "INSERT INTO users(username,password,role,balance ) VALUES(@name,@password,@role,@balans)", conn);
         sql2.Parameters.AddWithValue("@name", username);
         sql2.Parameters.AddWithValue("@password", password);
         sql2.Parameters.AddWithValue("@role", roleChoice);
@@ -68,7 +71,10 @@ public class AuthService
         try
         {
             using var conn = _db.GetConnection();
-            using var sql =  new NpgsqlCommand("SELECT username, password, role, balance FROM users WHERE username = @u AND password = @p LIMIT 1", conn);
+            using var sql =
+                new NpgsqlCommand(
+                    "SELECT id,username, password, role, balance FROM users WHERE username = @u AND password = @p LIMIT 1",
+                    conn);
             sql.Parameters.AddWithValue("@u", username);
             sql.Parameters.AddWithValue("@p", password);
 
@@ -79,18 +85,18 @@ public class AuthService
                 return;
             }
 
-            int index = 1;
-            string usern = reader.GetString(0);
-            string role = reader.GetString(2);
-            decimal balance = reader.GetDecimal(3);
+            int index = reader.GetInt32(0);
+            string usern = reader.GetString(1);
+            string role = reader.GetString(3);
+            decimal balance = reader.GetDecimal(4);
 
             UserRole rl = new UserRole();
-            
+
             if (role == "1")
                 rl = UserRole.Client;
             else if (role == "2")
                 rl = UserRole.Admin;
-            
+
             LoggedInUser = new User(index++, usern, password, rl, balance);
             Console.WriteLine($"Добро пожаловать, {LoggedInUser.Username} ({LoggedInUser.Role})!");
         }
@@ -114,4 +120,58 @@ public class AuthService
     }
 
     public bool IsAdmin() => LoggedInUser?.Role == UserRole.Admin;
+
+    public void Deposit()
+    {
+        //Console.WriteLine($"Ваш текущий баланс: {Balance}");
+        Console.WriteLine("Пополниет баланс:");
+
+        decimal newBalance;
+        while (true)
+        {
+            var input = Console.ReadLine();
+            if (decimal.TryParse(input, out newBalance) && newBalance > 0)
+                break;
+            Console.WriteLine("Неверная сумма. Введите положительное число:");
+        }
+
+        using var conn = _db.GetConnection();
+        decimal updateb = LoggedInUser.Balance + newBalance;
+        using var sql = new NpgsqlCommand("UPDATE users SET balance =  @b WHERE id = @id", conn);
+        sql.Parameters.AddWithValue("@b", updateb);
+        sql.Parameters.AddWithValue("@id", LoggedInUser.Id);
+        sql.ExecuteNonQuery();
+
+        LoggedInUser.Balance += newBalance;
+
+        Console.WriteLine($"Баланс пополнен. Новый баланс : {LoggedInUser.Balance} kzt");
+    }
+
+
+    public void ShowHistory()
+    {
+        using var conn = _db.GetConnection();
+        using var sql = new NpgsqlCommand("SELECT * FROM orders WHERE customer_id = @id", conn);
+        sql.Parameters.AddWithValue("@id", LoggedInUser.Id);
+
+        using var reader = sql.ExecuteReader();
+
+        if (!reader.HasRows)
+        {
+            Console.WriteLine("У вас пока нет покупок.");
+            return;
+        }
+
+        Console.WriteLine("История покупок:");
+
+        int index = 1;
+        while (reader.Read())
+        {
+            int brand = reader.GetInt32(0);
+            int model = reader.GetInt32(1);
+            DateTime date = reader.GetDateTime(3);
+
+            Console.WriteLine($"{index++}. {brand} {model}-({date:dd.MM.yyyy})");
+        }
+    }
 }
