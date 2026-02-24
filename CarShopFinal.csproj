@@ -29,7 +29,6 @@
       <Folder Include="WebApi\Configurations\" />
       <Folder Include="WebApi\Extensions\" />
       <Folder Include="WebApi\Filters\" />
-      <Folder Include="WebApi\Middlewares\" />
     </ItemGroup>
 
 </Project>

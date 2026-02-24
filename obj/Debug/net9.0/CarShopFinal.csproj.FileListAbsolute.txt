@@ -119,3 +119,12 @@
 /Users/seika/Desktop/CarShopFinal/CarShopFinal/obj/Debug/net9.0/CarShopFinal.pdb
 /Users/seika/Desktop/CarShopFinal/CarShopFinal/obj/Debug/net9.0/CarShopFinal.genruntimeconfig.cache
 /Users/seika/Desktop/CarShopFinal/CarShopFinal/obj/Debug/net9.0/ref/CarShopFinal.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/BCrypt.Net-Next.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.IdentityModel.Logging.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll

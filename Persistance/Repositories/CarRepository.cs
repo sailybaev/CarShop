@@ -42,5 +42,11 @@ public class CarRepository : ICarRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<List<Car>> GetFilteredCarAsync(string status)
+    {
+        return await _context.Cars.Where(c => c.Status.ToString() == status).ToListAsync<Car>();
+    }
+
 }
+//copy and make redis, customer and order features and controllers, middleware? some new exceptions
 
