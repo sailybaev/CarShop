@@ -17,8 +17,29 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
         builder.Property(x => x.Model)
             .IsRequired()
             .HasMaxLength(100);
-
         
+        builder.OwnsOne(x => x.Vin, vin =>
+        {
+	        vin.Property(v => v.Value)
+		        .HasColumnName("Vin")
+		        .IsRequired()
+		        .HasMaxLength(17);
+        });
+
+        builder.OwnsOne(x => x.Price, price =>
+        {
+	        price.Property(p => p.Amount)
+		        .HasColumnName("Price")
+		        .IsRequired();
+            
+            price.Property(p => p.Currency)
+                .HasColumnName("Currency")
+                .IsRequired()
+                .HasMaxLength(4); 
+        });
+
+
+
 
     }
 }

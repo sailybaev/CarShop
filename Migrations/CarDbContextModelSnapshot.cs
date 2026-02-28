@@ -88,6 +88,29 @@ namespace CarShopFinal.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("CarShopFinal.Domain.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("CarShopFinal.Domain.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -115,6 +138,166 @@ namespace CarShopFinal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("CarShopFinal.Domain.Models.Car", b =>
+                {
+                    b.OwnsOne("CarShopFinal.Domain.ValueObjects.Money", "Price", b1 =>
+                        {
+                            b1.Property<Guid>("CarId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("numeric")
+                                .HasColumnName("Price");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(4)
+                                .HasColumnType("character varying(4)")
+                                .HasColumnName("Currency");
+
+                            b1.HasKey("CarId");
+
+                            b1.ToTable("Cars");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CarId");
+                        });
+
+                    b.OwnsOne("CarShopFinal.Domain.Models.VIN", "Vin", b1 =>
+                        {
+                            b1.Property<Guid>("CarId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(17)
+                                .HasColumnType("character varying(17)")
+                                .HasColumnName("Vin");
+
+                            b1.HasKey("CarId");
+
+                            b1.ToTable("Cars");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CarId");
+                        });
+
+                    b.Navigation("Price")
+                        .IsRequired();
+
+                    b.Navigation("Vin")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarShopFinal.Domain.Models.Order", b =>
+                {
+                    b.OwnsMany("CarShopFinal.Domain.Models.OrderItem", "OrderItems", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid>("CarId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("CarId");
+
+                            b1.Property<Guid>("OrderId")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("OrderId");
+
+                            b1.ToTable("OrderItems", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderId");
+
+                            b1.OwnsOne("CarShopFinal.Domain.ValueObjects.Money", "price", b2 =>
+                                {
+                                    b2.Property<Guid>("OrderItemId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<decimal>("Amount")
+                                        .HasColumnType("numeric")
+                                        .HasColumnName("Price");
+
+                                    b2.Property<string>("Currency")
+                                        .IsRequired()
+                                        .HasMaxLength(4)
+                                        .HasColumnType("character varying(4)")
+                                        .HasColumnName("Currency");
+
+                                    b2.HasKey("OrderItemId");
+
+                                    b2.ToTable("OrderItems");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("OrderItemId");
+                                });
+
+                            b1.Navigation("price")
+                                .IsRequired();
+                        });
+
+                    b.OwnsMany("CarShopFinal.Domain.Models.PaymentItem", "PaymentItems", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid>("OrderId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateTime>("PaidAt")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("PaidAt");
+
+                            b1.Property<int>("Status")
+                                .HasColumnType("integer")
+                                .HasColumnName("Status");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("OrderId");
+
+                            b1.ToTable("PaymentItems", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderId");
+
+                            b1.OwnsOne("CarShopFinal.Domain.ValueObjects.Money", "Price", b2 =>
+                                {
+                                    b2.Property<Guid>("PaymentItemId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<decimal>("Amount")
+                                        .HasColumnType("numeric")
+                                        .HasColumnName("Amount");
+
+                                    b2.Property<string>("Currency")
+                                        .IsRequired()
+                                        .HasMaxLength(4)
+                                        .HasColumnType("character varying(4)")
+                                        .HasColumnName("Currency");
+
+                                    b2.HasKey("PaymentItemId");
+
+                                    b2.ToTable("PaymentItems");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("PaymentItemId");
+                                });
+
+                            b1.Navigation("Price")
+                                .IsRequired();
+                        });
+
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("PaymentItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/seika/Desktop/CarShopFinal/CarShopFinal/CarShopFinal.csproj": {}
+    "/Users/sailybaev/Desktop/CarShop/CarShopFinal.csproj": {}
   },
   "projects": {
-    "/Users/seika/Desktop/CarShopFinal/CarShopFinal/CarShopFinal.csproj": {
+    "/Users/sailybaev/Desktop/CarShop/CarShopFinal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/seika/Desktop/CarShopFinal/CarShopFinal/CarShopFinal.csproj",
+        "projectUniqueName": "/Users/sailybaev/Desktop/CarShop/CarShopFinal.csproj",
         "projectName": "CarShopFinal",
-        "projectPath": "/Users/seika/Desktop/CarShopFinal/CarShopFinal/CarShopFinal.csproj",
-        "packagesPath": "/Users/seika/.nuget/packages/",
-        "outputPath": "/Users/seika/Desktop/CarShopFinal/CarShopFinal/obj/",
+        "projectPath": "/Users/sailybaev/Desktop/CarShop/CarShopFinal.csproj",
+        "packagesPath": "/Users/sailybaev/.nuget/packages/",
+        "outputPath": "/Users/sailybaev/Desktop/CarShop/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/seika/.nuget/NuGet/NuGet.Config"
+          "/Users/sailybaev/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -104,7 +104,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.307/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.308/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
