@@ -268,3 +268,13 @@
 /Users/sailybaev/Desktop/CarShop/obj/Debug/net9.0/CarShopFinal.pdb
 /Users/sailybaev/Desktop/CarShop/obj/Debug/net9.0/CarShopFinal.genruntimeconfig.cache
 /Users/sailybaev/Desktop/CarShop/obj/Debug/net9.0/ref/CarShopFinal.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.Extensions.Caching.Abstractions.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.Extensions.Caching.StackExchangeRedis.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.Extensions.Options.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/Pipelines.Sockets.Unofficial.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/StackExchange.Redis.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/System.Diagnostics.DiagnosticSource.dll
+/Users/seika/Desktop/CarShopFinal/CarShopFinal/bin/Debug/net9.0/System.IO.Hashing.dll

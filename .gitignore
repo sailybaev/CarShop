@@ -1,5 +1,5 @@
 # .gitignore for a .NET / Visual Studio / Rider project
-
+/obj
 # Visual Studio
 .vs/
 *.suo

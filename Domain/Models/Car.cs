@@ -1,10 +1,12 @@
 using CarShopFinal.Domain.Enums;
 using CarShopFinal.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarShopFinal.Domain.Models;
 
 public class Car : AggregateRoot
 {
+    public Listing Listing { get; private set; }
     public string Brand {get; private set; }
     public string Model {get; private set; }
     public int Year {get; private set; }
