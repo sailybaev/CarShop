@@ -41,4 +41,29 @@ public class Car : AggregateRoot
         
         Status = CarStatus.Sold;
     }
+
+    public void UpdatePrice(Money price)
+    {
+        Price = price;
+    }
+
+    public void UpdateVin(string vin)
+    {
+        Vin = new VIN(vin);
+    }
+
+    public void UpdateBrand(string brand)
+    {
+        Brand = brand;
+    }
+
+    public void UpdateModel(string model)
+    {
+        Model = model;
+    }
+
+    public void UpdateYear(int year)
+    {
+        Year = year;
+    }
 }
