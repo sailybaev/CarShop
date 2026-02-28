@@ -1,0 +1,71 @@
+using CarShopFinal.Domain.Interfaces;
+using CarShopFinal.Domain.Models;
+using StackExchange.Redis;
+
+namespace CarShopFinal.Persistance.Redis;
+
+
+public class RedisDb : ICarRepository
+{
+    private readonly IDatabase _db;
+    
+    public RedisDb(IDatabase db)
+    {
+        _db = db;
+    }
+    
+    public async Task SetAsync(string key, string value, TimeSpan ttl)
+    {
+        await _db.StringSetAsync(key, value, ttl);
+    }
+
+    public async Task SetAsync(string key, TimeSpan ttl)
+    {
+        await _db.KeyExpireAsync(key, ttl);
+    }
+
+    public async Task<string?> GetAsync(string key)
+    {
+        return await _db.StringGetAsync(key);
+    }
+
+    public async Task DeleteAsync(string key)
+    {
+        await _db.KeyDeleteAsync(key);
+    }
+
+    public async Task<long> IncrementAsync(string key)
+    {
+        return await _db.StringIncrementAsync(key);
+    }
+
+    public Task<Car?> GetByIdAsync(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<Car>> GetAllAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task AddAsync(Car car)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteAsync(Car car)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateAsync(Car car)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<Car>> GetFilteredCarAsync(string status)
+    {
+        throw new NotImplementedException();
+    }
+}

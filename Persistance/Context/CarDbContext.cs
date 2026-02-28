@@ -12,6 +12,7 @@ public class CarDbContext : DbContext
     public DbSet<Car> Cars => Set<Car>();
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<User> User => Set<User>();
+    public DbSet<Order> Orders => Set<Order>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

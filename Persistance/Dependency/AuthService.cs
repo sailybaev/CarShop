@@ -40,6 +40,4 @@ public class AuthService
         
         return _tokenService.GenerateToken(exist);
     }
-    //прописать dependency injection, middleware, controller for authservice, test endpoint like in discord and migrations
-    
 }
