@@ -361,8 +361,7 @@ namespace CarShopFinal.Migrations
 
             modelBuilder.Entity("CarShopFinal.Domain.Models.Car", b =>
                 {
-                    b.Navigation("Listing")
-                        .IsRequired();
+                    b.Navigation("Listing");
                 });
 #pragma warning restore 612, 618
         }

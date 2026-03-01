@@ -11,14 +11,16 @@ public static class DependencyInjection
     {
         services.AddDbContext<CarDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-        
+
         services.AddScoped<ICarRepository, CarRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<AuthService>();
-        services.AddScoped<ITokenService,JWTtokenService>();
-        services.AddScoped<IPasswordHasher,PasswordHasher>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IListingRepository, ListingRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        
+        services.AddScoped<ITokenService, JWTtokenService>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<AuthService>();
+
         return services;
     }
 }

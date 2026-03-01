@@ -10,6 +10,6 @@ public class ListingConfiguration:IEntityTypeConfiguration<Listing>
     {
         builder.HasKey(x => x.Id);
         //builder.HasOne<Car>().WithMany().HasForeignKey(x => x.Car.Id);
-        builder.HasOne(c => c.Car).WithOne(t=>t.Listing).HasForeignKey<Listing>(c => c.CarId);
+        builder.HasOne(c => c.Car).WithOne(t => t.Listing).HasForeignKey<Listing>(c => c.CarId).IsRequired();
     }
 }

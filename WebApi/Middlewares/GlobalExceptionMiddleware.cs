@@ -30,31 +30,38 @@ public class GlobalExceptionMiddleware
 
     private static async Task handleExceptionAsync(HttpContext context, Exception exception)
     {
-        var k = exception switch
+        var problem = exception switch
         {
             NotFoundException => new ProblemDetails
-            { 
+            {
                 Status = StatusCodes.Status404NotFound,
-                Title = "Object not Found",
+                Title = "Not Found",
                 Detail = exception.Message
             },
-            
+
+            InvalidOperationException => new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Invalid Operation",
+                Detail = exception.Message
+            },
+
             ApplicationException => new ProblemDetails
             {
-            
-                Status = StatusCodes.Status500InternalServerError
-            
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Application Error",
+                Detail = exception.Message
             },
-            
-            _ => new ProblemDetails()
+
+            _ => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "Test",
-                Detail = "Uninspected error"
+                Title = "Internal Server Error",
+                Detail = "An unexpected error occurred."
             }
         };
         context.Response.ContentType = "application/problem+json";
-        context.Response.StatusCode = k.Status!.Value;
-        await context.Response.WriteAsJsonAsync(k);
+        context.Response.StatusCode = problem.Status!.Value;
+        await context.Response.WriteAsJsonAsync(problem);
     }
 }

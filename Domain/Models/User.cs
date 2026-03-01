@@ -10,6 +10,7 @@ public class User:AggregateRoot
 
     public User(string email, string hashPass, string role)
     {
+        Id = Guid.NewGuid();
         this.email = email;
         this.hashPass = hashPass;
         this.role = role;

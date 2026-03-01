@@ -19,7 +19,7 @@ public class CreateCarHandler
                 command.model,
                 command.year,
                 command.vin,
-                new Money(command.price, "USD")
+                new Money(command.price, command.currency)
             );
 
             await _carRepository.AddAsync(car);

@@ -49,7 +49,17 @@ public class Order : AggregateRoot
         return new Money(totalAmount , _orderItems[0].price.Currency);
     }
     
-    // DDD - domain driven development - Fintech , Bigtech 
+
+    public void MarkAsReserved()
+    {
+        if (Status != OrderStatus.Pending)
+        {
+            throw new InvalidOperationException($"Order with status {Status} cannot be reserved.");
+        }
+
+        Status = OrderStatus.Reserved;
+        SetUpdatedAt();
+    }
 
     public void Cancel()
     {
@@ -57,7 +67,7 @@ public class Order : AggregateRoot
         {
             throw new InvalidOperationException("Delivered orders can not be cancelled.");
         }
-        
+
         Status = OrderStatus.Canceled;
         SetUpdatedAt();
     }
@@ -68,20 +78,40 @@ public class Order : AggregateRoot
         {
             throw new InvalidOperationException($"Order with status {Status} cannot be marked as paid.");
         }
-       
+
         Status = OrderStatus.Paid;
         SetUpdatedAt();
     }
-    
+
+    public void Deliver()
+    {
+        if (Status != OrderStatus.Paid)
+        {
+            throw new InvalidOperationException("Only paid orders can be delivered.");
+        }
+
+        Status = OrderStatus.Delivered;
+        SetUpdatedAt();
+    }
+
+    public void Refund()
+    {
+        if (Status != OrderStatus.Paid && Status != OrderStatus.Delivered)
+        {
+            throw new InvalidOperationException("Only paid or delivered orders can be refunded.");
+        }
+
+        Status = OrderStatus.Refunded;
+        SetUpdatedAt();
+    }
+
     public void Payment(PaymentItem paymentItem)
     {
         if (Status != OrderStatus.Paid)
         {
             throw new InvalidOperationException("Only paid orders can be processed for payment.");
         }
-        
+
         _paymentItems.Add(paymentItem);
     }
-    
-    
 }

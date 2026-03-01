@@ -6,7 +6,7 @@ namespace CarShopFinal.Domain.Models;
 
 public class Car : AggregateRoot
 {
-    public Listing Listing { get; private set; }
+    public Listing? Listing { get; private set; }
     public string Brand {get; private set; }
     public string Model {get; private set; }
     public int Year {get; private set; }
@@ -33,8 +33,9 @@ public class Car : AggregateRoot
     public void Reserve()
     {
         if(Status != CarStatus.InStock) throw new InvalidOperationException("Only cars in stock can be reserved.");
-        
+
         Status = CarStatus.Reserved;
+        SetUpdatedAt();
     }
     
     public void MarkAsSold()
@@ -48,6 +49,7 @@ public class Car : AggregateRoot
     {
         Price = price;
     }
+    
 
     public void UpdateVin(string vin)
     {

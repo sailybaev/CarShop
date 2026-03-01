@@ -19,17 +19,27 @@ public class Listing:AggregateRoot
 
     public Listing(){}
 
-    public Listing(Guid sellerId, ModerationStatus? status,Car car, int view, string city, string description,
+    public Listing(Guid sellerId, ModerationStatus? status, Car car, int view, string city, string description,
         List<Guid> carImage)
     {
+        Id = Guid.NewGuid();
         SellerId = sellerId;
         Status = status;
         Car = car;
+        CarId = car.Id;
         View = view;
         City = city ?? throw new ArgumentNullException(nameof(city));
         Description = description ?? throw new ArgumentNullException(nameof(description));
         CarImage = carImage ?? throw new ArgumentNullException(nameof(carImage));
-        ListingStatus =  ListingStatus.Draft;
+        ListingStatus = ListingStatus.Draft;
+        SetCreatedAt();
+    }
+
+    public void Update(string city, string description)
+    {
+        City = city ?? throw new ArgumentNullException(nameof(city));
+        Description = description ?? throw new ArgumentNullException(nameof(description));
+        SetUpdatedAt();
     }
 
     public void Approve()
