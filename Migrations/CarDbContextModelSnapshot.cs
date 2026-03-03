@@ -98,9 +98,9 @@ namespace CarShopFinal.Migrations
                     b.Property<Guid>("CarId")
                         .HasColumnType("uuid");
 
-                    b.PrimitiveCollection<List<Guid>>("CarImage")
+                    b.PrimitiveCollection<List<string>>("CarImages")
                         .IsRequired()
-                        .HasColumnType("uuid[]");
+                        .HasColumnType("text[]");
 
                     b.Property<string>("City")
                         .IsRequired()

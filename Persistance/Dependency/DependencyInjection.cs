@@ -1,4 +1,5 @@
 using CarShopFinal.Domain.Interfaces;
+using CarShopFinal.Infrastructure.Services;
 using CarShopFinal.Persistance.Context;
 using CarShopFinal.Persistance.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ public static class DependencyInjection
         services.AddScoped<ITokenService, JWTtokenService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<AuthService>();
+        services.AddScoped<IFileService, FileService>();
 
         return services;
     }
