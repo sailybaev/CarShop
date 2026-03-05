@@ -98,9 +98,9 @@ namespace CarShopFinal.Migrations
                     b.Property<Guid>("CarId")
                         .HasColumnType("uuid");
 
-                    b.PrimitiveCollection<List<Guid>>("CarImage")
+                    b.PrimitiveCollection<List<string>>("CarImages")
                         .IsRequired()
-                        .HasColumnType("uuid[]");
+                        .HasColumnType("text[]");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -361,8 +361,7 @@ namespace CarShopFinal.Migrations
 
             modelBuilder.Entity("CarShopFinal.Domain.Models.Car", b =>
                 {
-                    b.Navigation("Listing")
-                        .IsRequired();
+                    b.Navigation("Listing");
                 });
 #pragma warning restore 612, 618
         }

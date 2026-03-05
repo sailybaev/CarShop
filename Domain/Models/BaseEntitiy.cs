@@ -12,6 +12,7 @@ public class BaseEntitiy
         CreatedAt = DateTime.UtcNow;
     }
     
+    
     public void SetUpdatedAt()
     {
         UpdatedAt = DateTime.UtcNow;

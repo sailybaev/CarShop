@@ -1,5 +1,5 @@
 # .gitignore for a .NET / Visual Studio / Rider project
-/obj
+
 # Visual Studio
 .vs/
 *.suo
@@ -15,7 +15,7 @@
 *.sln.iml
 
 # Build outputs
-**/bin/
+/bin/
 **/obj/
 **/out/
 
@@ -81,3 +81,4 @@ node_modules/
 *.pdb
 
 # End of file
+/bin/

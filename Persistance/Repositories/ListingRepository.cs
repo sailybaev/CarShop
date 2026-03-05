@@ -1,3 +1,4 @@
+using CarShopFinal.Domain.Enums;
 using CarShopFinal.Domain.Interfaces;
 using CarShopFinal.Domain.Models;
 using CarShopFinal.Persistance.Context;
@@ -38,32 +39,35 @@ public class ListingRepository:IListingRepository
 
     public async Task<List<Listing>> GetListingsByModerationStatus(string moderationStatus)
     {
-        return await _db.Listings.Where(s => s.Status.ToString() == moderationStatus).ToListAsync();
+        var status = Enum.Parse<ModerationStatus>(moderationStatus, ignoreCase: true);
+        return await _db.Listings.Where(s => s.Status == status).ToListAsync();
     }
 
     public async Task<List<Listing>> GetListingsByListingStatus(string listingStatus)
     {
-        return await _db.Listings.Where(s => s.ListingStatus.ToString() == listingStatus).ToListAsync();
+        var status = Enum.Parse<ListingStatus>(listingStatus, ignoreCase: true);
+        return await _db.Listings.Where(s => s.ListingStatus == status).ToListAsync();
     }
 
     public async Task<List<Listing>> GetListingsByCity(string city)
     {
-        return await _db.Listings.Where(s => s.City.ToString() == city).ToListAsync();
+        return await _db.Listings.Where(s => s.City == city).ToListAsync();
     }
 
     public async Task<List<Listing>> GetListingsByBrand(string brand)
     {
-        return await _db.Listings.Where(s => s.Car.Brand.ToString() == brand).ToListAsync();
+        return await _db.Listings.Include(s => s.Car).Where(s => s.Car.Brand == brand).ToListAsync();
     }
 
     public async Task<List<Listing>> GetListingsByModel(string model)
     {
-        return await _db.Listings.Where(s => s.Car.Model.ToString() == model).ToListAsync();
+        return await _db.Listings.Include(s => s.Car).Where(s => s.Car.Model == model).ToListAsync();
     }
 
     public async Task<List<Listing>> GetListingsByYear(string year)
     {
-        return await _db.Listings.Where(s => s.Car.Year.ToString() == year).ToListAsync();
+        var yearInt = int.Parse(year);
+        return await _db.Listings.Include(s => s.Car).Where(s => s.Car.Year == yearInt).ToListAsync();
     }
 
     public async Task<List<Listing>> GetListingsByPrice(decimal from, decimal to)

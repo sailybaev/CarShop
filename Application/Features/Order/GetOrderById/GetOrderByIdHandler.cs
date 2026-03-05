@@ -1,11 +1,12 @@
-using CarShopFinal.Persistance.Repositories;
+using CarShopFinal.Domain.Interfaces;
 
 namespace CarShopFinal.Application.Features.Order.GetOrderById;
 
 public class GetOrderByIdHandler
 {
-    private readonly OrderRepository _orderRepository;
-    public GetOrderByIdHandler(OrderRepository orderRepository)
+    // PRAVKA: Do etogo bylo OrderRepository vmesto IOrderRepository
+    private readonly IOrderRepository _orderRepository;
+    public GetOrderByIdHandler(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }

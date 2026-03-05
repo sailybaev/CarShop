@@ -33,7 +33,8 @@ public class CarRepository : ICarRepository
 
     public async Task DeleteAsync(Car car)
     {
-         _context.Cars.Remove(car);
+        _context.Cars.Remove(car);
+        await _context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Car car)
@@ -48,5 +49,3 @@ public class CarRepository : ICarRepository
     }
 
 }
-//copy and make redis, customer and order features and controllers, middleware? some new exceptions
-

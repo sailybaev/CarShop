@@ -12,9 +12,8 @@ public class ReserveCarHandler
 
     public async Task Handle(ReserveCarCommand command)
     {
-        var car = await _carRepository.GetByIdAsync(command.Id)?? throw new Exception("Car not found");
+        var car = await _carRepository.GetByIdAsync(command.Id) ?? throw new Exception("Car not found");
         car.Reserve();
-        car.SetUpdatedAt();
         await _carRepository.UpdateAsync(car);
     }
 }

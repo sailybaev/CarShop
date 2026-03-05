@@ -1,11 +1,11 @@
-using CarShopFinal.Persistance.Repositories;
+using CarShopFinal.Domain.Interfaces;
 
 namespace CarShopFinal.Application.Features.Order.CreateOrder;
 
 public class CreateOrderHandle
 {
-    private readonly OrderRepository _orderRepository;
-    public CreateOrderHandle(OrderRepository orderRepository)
+    private readonly IOrderRepository _orderRepository;
+    public CreateOrderHandle(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }
