@@ -6,6 +6,11 @@ public class User:AggregateRoot
     public string hashPass { get; private set; }
     public string role { get; private set; }
     
+    public Seller seller { get; private set; }
+    
+    public Customer customer { get; private set; }
+    
+    
     private User(){}
 
     public User(string email, string hashPass, string role)

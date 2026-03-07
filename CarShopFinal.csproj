@@ -28,7 +28,6 @@
       <Folder Include="Application\Common\" />
       <Folder Include="Application\Features\Order\GetOrderByCustomerId\" />
       <Folder Include="Domain\Events\" />
-      <Folder Include="Infrastructure\Services\" />
       <Folder Include="WebApi\Configurations\" />
       <Folder Include="WebApi\Extensions\" />
       <Folder Include="WebApi\Filters\" />

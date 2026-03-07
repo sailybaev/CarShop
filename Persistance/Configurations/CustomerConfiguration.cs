@@ -13,5 +13,7 @@ public class CustomerConfiguration:IEntityTypeConfiguration<Customer>
         builder.Property(x => x.LastName).IsRequired();
         builder.Property(x => x.Email).IsRequired();
         builder.Property(x => x.PhoneNumber).IsRequired();
+        builder.HasOne(x => x.User).WithOne().HasForeignKey<Customer>(x => x.UserID).IsRequired();
+        
     }
 }

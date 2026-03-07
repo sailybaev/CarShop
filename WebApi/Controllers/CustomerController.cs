@@ -48,7 +48,7 @@ public class CustomerController : ControllerBase
     [HttpGet("by-email")]
     public async Task<IActionResult> GetCustomerByEmail([FromQuery] string email)
     {
-        var customer = await _getCustomerByEmailHandle.GetByEmail(new GetCustomerByEmailQuery(email));
+        var customer = await _getCustomerByEmailHandle.Handle(new GetCustomerByEmailQuery(email));
         if (customer is null) return NotFound();
         return Ok(customer);
     }
@@ -64,8 +64,3 @@ public class CustomerController : ControllerBase
 
 public record UpdateCustomerRequest(string Email, string PhoneNumber);
 
-/* PRAVKI
-   private readonly GetCustomerByIdHandle _getCustomerByIdHandle;
-   private readonly GetCustomerByEmailHandle _getCustomerByEmailHandle;
-   private readonly UpdateCustomerHandler _updateCustomerHandler;
-*/

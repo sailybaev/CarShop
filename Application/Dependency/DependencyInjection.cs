@@ -18,6 +18,12 @@ using CarShopFinal.Application.Features.Listing.UpdateListing;
 using CarShopFinal.Application.Features.Order.CancelOrder;
 using CarShopFinal.Application.Features.Order.CreateOrder;
 using CarShopFinal.Application.Features.Order.GetOrderById;
+using CarShopFinal.Application.Features.Seller.CreateSeller;
+using CarShopFinal.Application.Features.Seller.GetSellerByEmail;
+using CarShopFinal.Application.Features.Seller.GetSellerById;
+using CarShopFinal.Application.Features.Seller.GetSellerByUserId;
+using CarShopFinal.Application.Features.Seller.UpdateSeller;
+using CarShopFinal.Application.Features.Seller.UpdateSellerCity;
 
 namespace CarShopFinal.Application.Dependency;
 
@@ -52,6 +58,14 @@ public static class DependencyInjection
         services.AddScoped<CreateOrderHandle>();
         services.AddScoped<GetOrderByIdHandler>();
         services.AddScoped<CancelOrderHandler>();
+        
+        //Seller handlers
+        services.AddScoped<CreateSellerHandler>();
+        services.AddScoped<GetSellerByIdHandler>();
+        services.AddScoped<GetSellerByEmailHandler>();
+        services.AddScoped<GetSellerByUserIDHandler>();
+        services.AddScoped<UpdateSellerCityHandler>();
+        services.AddScoped<UpdateSellerContactInfoHandler>();
 
         return services;
     }

@@ -13,7 +13,7 @@ public class CreateCustomerHandler
     
     public async Task<Guid> Handle(CreateCustomerCommand request)
     {
-        var customer = new Domain.Models.Customer(request.FirstName, request.LastName, request.Email, request.PhoneNumber);
+        var customer = new Domain.Models.Customer(request.userID, request.FirstName, request.LastName, request.Email, request.PhoneNumber);
         await _customerRepository.AddAsync(customer);
         return  customer.Id;
     }

@@ -1,10 +1,15 @@
 using System.Text;
 using CarShopFinal.Persistance;
 using CarShopFinal.Application.Dependency;
+using CarShopFinal.Persistance.Context;
 using CarShopFinal.Persistance.Dependency;
+using CarShopFinal.Persistance.Redis;
 using CarShopFinal.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
+using IRedis = CarShopFinal.Persistance.Redis.IRedis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +30,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             )
         };
     });
+
+builder.Services.AddDbContext<CarDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//Redis connection
+builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
+    ConnectionMultiplexer.Connect("localhost:6379")); //6379 otp pass redis
+    
+builder.Services.AddScoped<IRedis>(sp =>
+{
+    var mux = sp.GetRequiredService<IConnectionMultiplexer>();
+    return new RedisDb(mux.GetDatabase());
+});
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers()

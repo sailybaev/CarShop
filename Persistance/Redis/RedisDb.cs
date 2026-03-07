@@ -5,7 +5,7 @@ using StackExchange.Redis;
 namespace CarShopFinal.Persistance.Redis;
 
 
-public class RedisDb : ICarRepository
+public class RedisDb : IRedis
 {
     private readonly IDatabase _db;
     
@@ -36,36 +36,6 @@ public class RedisDb : ICarRepository
 
     public async Task<long> IncrementAsync(string key)
     {
-        return await _db.StringIncrementAsync(key);
-    }
-
-    public Task<Car?> GetByIdAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<Car>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task AddAsync(Car car)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteAsync(Car car)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateAsync(Car car)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<Car>> GetFilteredCarAsync(string status)
-    {
-        throw new NotImplementedException();
+        return await _db.StringIncrementAsync(key); 
     }
 }

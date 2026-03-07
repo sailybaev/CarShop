@@ -109,12 +109,3 @@ public class ListingController : ControllerBase
 public record CreateListingRequest(Guid SellerId, Guid CarId, string City, string Description);
 
 public record UpdateListingRequest(string City, string Description);
-
-//PRAVKA
-/*
-   private readonly GetListingsHandler _getListingsHandler;
-   private readonly ApproveListingHandler _approveListingHandler;
-   private readonly RejectListingHandler _rejectListingHandler;
-   private readonly DeleteListingHandler _deleteListingHandler;
-   private readonly UpdateListingHandler _updateListingHandler;
-*/

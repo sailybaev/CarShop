@@ -1,6 +1,7 @@
 using CarShopFinal.Domain.Interfaces;
 using CarShopFinal.Infrastructure.Services;
 using CarShopFinal.Persistance.Context;
+using CarShopFinal.Persistance.Redis;
 using CarShopFinal.Persistance.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,10 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<AuthService>();
         services.AddScoped<IFileService, FileService>();
+        services.AddScoped<ICacheService, CacheService>();
+        services.AddScoped<IRedis, RedisDb>();
+        services.AddScoped<ISellerRepository, SellerRepository>();
+        
 
         return services;
     }

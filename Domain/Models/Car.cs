@@ -20,6 +20,10 @@ public class Car : AggregateRoot
     
     public Car(string brand, string model, int year, VIN vin, Money price)
     {
+        ValidateBrand(brand);
+        ValidateModel(model);
+        ValidateYear(year);
+        
         Id = Guid.NewGuid();
         Brand = brand;
         Model = model;
@@ -48,26 +52,62 @@ public class Car : AggregateRoot
     public void UpdatePrice(Money price)
     {
         Price = price;
+        SetUpdatedAt();
     }
     
 
     public void UpdateVin(string vin)
     {
         Vin = new VIN(vin);
+        SetUpdatedAt();
     }
 
     public void UpdateBrand(string brand)
     {
+        ValidateBrand(brand);
         Brand = brand;
+        SetUpdatedAt();
     }
 
     public void UpdateModel(string model)
     {
+        ValidateModel(model);
         Model = model;
+        SetUpdatedAt();
     }
 
     public void UpdateYear(int year)
     {
+        ValidateYear(year);
         Year = year;
+        SetUpdatedAt();
     }
+
+    private void ValidateYear(int year)
+    {
+        var currentYear = DateTime.UtcNow.Year;
+        
+        if(year > currentYear)
+            throw new ArgumentException("Year cannot be greater than current year.");
+
+        if (year < 1886)
+            throw new ArgumentException("Year cannot be earlier than 1886.");
+    }
+
+    private void ValidateBrand(string brand)
+    {
+        if(string.IsNullOrWhiteSpace(brand))
+            throw new ArgumentException("Brand cannot be empty.");
+        if(brand.Length > 10)
+            throw new ArgumentException("Brand cannot be longer than 10 characters.");
+    }
+
+    private void ValidateModel(string model)
+    {
+        if(string.IsNullOrWhiteSpace(model))
+            throw new ArgumentException("Model cannot be empty.");
+        if(model.Length > 100)
+            throw new ArgumentException("Model cannot be longer than 100 characters.");
+    }
+    
 }

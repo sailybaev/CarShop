@@ -15,9 +15,9 @@ public class AuthController:ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromForm] string email,[FromForm] string password)
+    public async Task<IActionResult> Register([FromForm] string email,[FromForm] string password, [FromForm] string role)
     {
-        var token = await _authService.RegisterUser(email, password);
+        var token = await _authService.RegisterUser(email, password,role);
         return Ok(token);
     }
 
