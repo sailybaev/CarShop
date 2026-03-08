@@ -16,6 +16,8 @@ public class CarDbContext : DbContext
     public DbSet<Listing> Listings => Set<Listing>();
     
     public DbSet<Seller> Sellers => Set<Seller>();
+    
+    public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

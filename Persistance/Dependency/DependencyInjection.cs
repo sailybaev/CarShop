@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddScoped<ICacheService, CacheService>();
         services.AddScoped<IRedis, RedisDb>();
         services.AddScoped<ISellerRepository, SellerRepository>();
+        services.AddScoped<IChatMessageRepository, ChatMessageRepository>();
         
 
         return services;

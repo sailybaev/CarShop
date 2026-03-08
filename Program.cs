@@ -4,6 +4,7 @@ using CarShopFinal.Application.Dependency;
 using CarShopFinal.Persistance.Context;
 using CarShopFinal.Persistance.Dependency;
 using CarShopFinal.Persistance.Redis;
+using CarShopFinal.WebApi.Hubs;
 using CarShopFinal.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddDbContext<CarDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 //Redis connection
 builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
@@ -41,7 +41,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
 builder.Services.AddScoped<IRedis>(sp =>
 {
     var mux = sp.GetRequiredService<IConnectionMultiplexer>();
-    return new RedisDb(mux.GetDatabase());
+    return new RedisDb(mux);
 });
 
 builder.Services.AddAuthorization();
@@ -50,8 +50,18 @@ builder.Services.AddControllers()
 builder.Services.AddOpenApi();
 builder.Services.AddApplication();
 builder.Services.AddPersistance(builder.Configuration);
+builder.Services.AddSignalR();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("dev", policy =>
+    {
+        policy.WithOrigins("http://localhost", "http://127.0.0.1:5500", "null").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+    });
+});
 
 var app = builder.Build();
+
+app.UseCors("dev");
 
 if (app.Environment.IsDevelopment())
 {
@@ -68,4 +78,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapHub<ChatHub>("/hub/chat");
 app.Run();

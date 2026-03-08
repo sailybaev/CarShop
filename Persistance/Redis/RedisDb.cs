@@ -9,9 +9,9 @@ public class RedisDb : IRedis
 {
     private readonly IDatabase _db;
     
-    public RedisDb(IDatabase db)
+    public RedisDb(IConnectionMultiplexer db)
     {
-        _db = db;
+        _db = db.GetDatabase();
     }
     
     public async Task SetAsync(string key, string value, TimeSpan ttl)

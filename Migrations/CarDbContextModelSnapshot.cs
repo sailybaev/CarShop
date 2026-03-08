@@ -56,6 +56,48 @@ namespace CarShopFinal.Migrations
                     b.ToTable("Cars");
                 });
 
+            modelBuilder.Entity("CarShopFinal.Domain.Models.ChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("isRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("listingID")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("message")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<Guid>("receiverID")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("senderID")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("listingID");
+
+                    b.HasIndex("receiverID");
+
+                    b.HasIndex("senderID");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("CarShopFinal.Domain.Models.Customer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -84,7 +126,19 @@ namespace CarShopFinal.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserID")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Customers");
                 });
@@ -157,6 +211,58 @@ namespace CarShopFinal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("CarShopFinal.Domain.Models.Seller", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CompanyAddress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CompanyCity")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CompanyEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CompanyPhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId1")
+                        .IsUnique();
+
+                    b.ToTable("Sellers");
                 });
 
             modelBuilder.Entity("CarShopFinal.Domain.Models.User", b =>
@@ -237,6 +343,48 @@ namespace CarShopFinal.Migrations
 
                     b.Navigation("Vin")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CarShopFinal.Domain.Models.ChatMessage", b =>
+                {
+                    b.HasOne("CarShopFinal.Domain.Models.Listing", "listing")
+                        .WithMany()
+                        .HasForeignKey("listingID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShopFinal.Domain.Models.User", "receiver")
+                        .WithMany()
+                        .HasForeignKey("receiverID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShopFinal.Domain.Models.User", "sender")
+                        .WithMany()
+                        .HasForeignKey("senderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("listing");
+
+                    b.Navigation("receiver");
+
+                    b.Navigation("sender");
+                });
+
+            modelBuilder.Entity("CarShopFinal.Domain.Models.Customer", b =>
+                {
+                    b.HasOne("CarShopFinal.Domain.Models.User", "User")
+                        .WithOne()
+                        .HasForeignKey("CarShopFinal.Domain.Models.Customer", "UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShopFinal.Domain.Models.User", null)
+                        .WithOne("customer")
+                        .HasForeignKey("CarShopFinal.Domain.Models.Customer", "UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarShopFinal.Domain.Models.Listing", b =>
@@ -359,9 +507,33 @@ namespace CarShopFinal.Migrations
                     b.Navigation("PaymentItems");
                 });
 
+            modelBuilder.Entity("CarShopFinal.Domain.Models.Seller", b =>
+                {
+                    b.HasOne("CarShopFinal.Domain.Models.User", "User")
+                        .WithOne()
+                        .HasForeignKey("CarShopFinal.Domain.Models.Seller", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShopFinal.Domain.Models.User", null)
+                        .WithOne("seller")
+                        .HasForeignKey("CarShopFinal.Domain.Models.Seller", "UserId1");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CarShopFinal.Domain.Models.Car", b =>
                 {
                     b.Navigation("Listing");
+                });
+
+            modelBuilder.Entity("CarShopFinal.Domain.Models.User", b =>
+                {
+                    b.Navigation("customer")
+                        .IsRequired();
+
+                    b.Navigation("seller")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
