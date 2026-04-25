@@ -5,7 +5,7 @@ namespace CarShopFinal.Domain.Interfaces;
 public interface IListingRepository
 {
     Task CreateListing(Listing listing);
-    Task<Listing> GetListing(Guid id);
+    Task<Listing?> GetListing(Guid id);
     Task DeleteListing(Listing listing);
     Task UpdateListing(Listing listing);
     Task<List<Listing>> GetListingsByModerationStatus(string moderationStatus);

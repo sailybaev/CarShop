@@ -20,7 +20,7 @@ public class AuthService
     {
         var exist = await _userRepository.GetByEmailAsync(email);
         if(exist != null)
-            throw new Exception("User already exist");
+            throw new ApplicationException("User already exists");
         
         var hash = _passwordHasher.HashPassword(password);
         var user = new User(email, hash, role);
@@ -33,10 +33,10 @@ public class AuthService
     {
         var exist = await _userRepository.GetByEmailAsync(email);
         if(exist == null)
-            throw new Exception("User not found");
-        
+            throw new ApplicationException("User not found");
+
         if(!_passwordHasher.VerifyHashedPassword(password,exist.hashPass))
-            throw new Exception("Wrong password");
+            throw new ApplicationException("Wrong password");
         
         return _tokenService.GenerateToken(exist);
     }

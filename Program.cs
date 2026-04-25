@@ -55,7 +55,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("dev", policy =>
     {
-        policy.WithOrigins("http://localhost", "http://127.0.0.1:5500", "null").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+        policy.WithOrigins("http://localhost:3000", "http://localhost", "http://127.0.0.1:5500", "null").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
     });
 });
 
@@ -79,4 +79,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<ChatHub>("/hub/chat");
+
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<CarShopFinal.Persistance.Seeding.DataSeeder>();
+    await seeder.SeedAsync();
+}
+
 app.Run();

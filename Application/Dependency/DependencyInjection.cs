@@ -12,6 +12,7 @@ using CarShopFinal.Application.Features.Customer.UpdateCustomer;
 using CarShopFinal.Application.Features.Listing.ApproveListing;
 using CarShopFinal.Application.Features.Listing.CreateListing;
 using CarShopFinal.Application.Features.Listing.DeleteListing;
+using CarShopFinal.Application.Features.Listing.GetListingById;
 using CarShopFinal.Application.Features.Listing.GetListings;
 using CarShopFinal.Application.Features.Listing.RejectListing;
 using CarShopFinal.Application.Features.Listing.UpdateListing;
@@ -49,6 +50,7 @@ public static class DependencyInjection
         // Listing handlers
         services.AddScoped<CreateListingHandler>();
         services.AddScoped<GetListingsHandler>();
+        services.AddScoped<GetListingByIdHandler>();
         services.AddScoped<ApproveListingHandler>();
         services.AddScoped<RejectListingHandler>();
         services.AddScoped<DeleteListingHandler>();

@@ -10,20 +10,20 @@ public class Car : AggregateRoot
     public string Brand {get; private set; }
     public string Model {get; private set; }
     public int Year {get; private set; }
-    
+
     public VIN Vin {get; private set; }
     public Money Price {get; private set; }
-    
+
     public CarStatus Status {get; private set; }
-    
+
     private Car() { }
-    
+
     public Car(string brand, string model, int year, VIN vin, Money price)
     {
         ValidateBrand(brand);
         ValidateModel(model);
         ValidateYear(year);
-        
+
         Id = Guid.NewGuid();
         Brand = brand;
         Model = model;

@@ -17,7 +17,7 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
         builder.Property(x => x.Model)
             .IsRequired()
             .HasMaxLength(100);
-        
+
         builder.OwnsOne(x => x.Vin, vin =>
         {
 	        vin.Property(v => v.Value)

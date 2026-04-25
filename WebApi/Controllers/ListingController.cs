@@ -1,6 +1,7 @@
 using CarShopFinal.Application.Features.Listing.ApproveListing;
 using CarShopFinal.Application.Features.Listing.CreateListing;
 using CarShopFinal.Application.Features.Listing.DeleteListing;
+using CarShopFinal.Application.Features.Listing.GetListingById;
 using CarShopFinal.Application.Features.Listing.GetListings;
 using CarShopFinal.Application.Features.Listing.RejectListing;
 using CarShopFinal.Application.Features.Listing.UpdateListing;
@@ -16,6 +17,7 @@ public class ListingController : ControllerBase
 {
     private readonly CreateListingHandler _createListingHandler;
     private readonly GetListingsHandler _getListingsHandler;
+    private readonly GetListingByIdHandler _getListingByIdHandler;
     private readonly ApproveListingHandler _approveListingHandler;
     private readonly RejectListingHandler _rejectListingHandler;
     private readonly DeleteListingHandler _deleteListingHandler;
@@ -25,6 +27,7 @@ public class ListingController : ControllerBase
     public ListingController(
         CreateListingHandler createListingHandler,
         GetListingsHandler getListingsHandler,
+        GetListingByIdHandler getListingByIdHandler,
         ApproveListingHandler approveListingHandler,
         RejectListingHandler rejectListingHandler,
         DeleteListingHandler deleteListingHandler,
@@ -33,6 +36,7 @@ public class ListingController : ControllerBase
     {
         _createListingHandler = createListingHandler;
         _getListingsHandler = getListingsHandler;
+        _getListingByIdHandler = getListingByIdHandler;
         _approveListingHandler = approveListingHandler;
         _rejectListingHandler = rejectListingHandler;
         _deleteListingHandler = deleteListingHandler;
@@ -71,6 +75,14 @@ public class ListingController : ControllerBase
         var listings = await _getListingsHandler.Handle(
             new GetListingsQuery(city, brand, model, year, priceFrom, priceTo, listingStatus, moderationStatus));
         return Ok(listings);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetListing(Guid id)
+    {
+        var listing = await _getListingByIdHandler.Handle(new GetListingByIdQuery(id));
+        if (listing is null) return NotFound();
+        return Ok(listing);
     }
 
     [Authorize]

@@ -3,6 +3,7 @@ using CarShopFinal.Infrastructure.Services;
 using CarShopFinal.Persistance.Context;
 using CarShopFinal.Persistance.Redis;
 using CarShopFinal.Persistance.Repositories;
+using CarShopFinal.Persistance.Seeding;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarShopFinal.Persistance.Dependency;
@@ -27,7 +28,7 @@ public static class DependencyInjection
         services.AddScoped<IRedis, RedisDb>();
         services.AddScoped<ISellerRepository, SellerRepository>();
         services.AddScoped<IChatMessageRepository, ChatMessageRepository>();
-        
+        services.AddScoped<DataSeeder>();
 
         return services;
     }

@@ -20,9 +20,9 @@ public class ListingRepository:IListingRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<Listing> GetListing(Guid id)
+    public async Task<Listing?> GetListing(Guid id)
     {
-        return await _db.Listings.FindAsync(id);
+        return await _db.Listings.Include(s => s.Car).FirstOrDefaultAsync(s => s.Id == id);
     }
 
     public async Task DeleteListing(Listing listing)
@@ -46,7 +46,7 @@ public class ListingRepository:IListingRepository
     public async Task<List<Listing>> GetListingsByListingStatus(string listingStatus)
     {
         var status = Enum.Parse<ListingStatus>(listingStatus, ignoreCase: true);
-        return await _db.Listings.Where(s => s.ListingStatus == status).ToListAsync();
+        return await _db.Listings.Include(s => s.Car).Where(s => s.ListingStatus == status).ToListAsync();
     }
 
     public async Task<List<Listing>> GetListingsByCity(string city)

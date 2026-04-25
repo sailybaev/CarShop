@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: carshop-postgres
+    environment:
+      POSTGRES_DB: carshop
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - carshop-pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  carshop-pgdata:
