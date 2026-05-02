@@ -23,6 +23,11 @@ services:
     ports:
       - "6379:6379"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     build:
@@ -32,15 +37,18 @@ services:
     ports:
       - "5107:8080"
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=carshop;Username=postgres;Password=password"
       Redis__ConnectionString: "redis:6379"
+      jwt__key: "asdbfjdlvfdkopsfvnjvbsh37rtgf92uebhfjewef9e4ub3gkj"
+      jwt__issuer: "CarShop"
+      jwt__audience: "CarShopUsers"
     depends_on:
       postgres:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - carshop-uploads:/app/wwwroot/uploads
     restart: unless-stopped
