@@ -19,7 +19,19 @@ public class DataSeeder
 
     public async Task SeedAsync()
     {
-        if (await _db.Listings.AnyAsync()) return;
+        // Re-seed if all listings have no images (stale seed data)
+        if (await _db.Listings.AnyAsync())
+        {
+            var listings = await _db.Listings.ToListAsync();
+            if (listings.Any(l => l.CarImages.Count > 0)) return;
+
+            // Wipe stale data so we can re-seed with images
+            _db.Listings.RemoveRange(listings);
+            _db.Cars.RemoveRange(_db.Cars);
+            _db.Sellers.RemoveRange(_db.Sellers);
+            _db.User.RemoveRange(_db.User);
+            await _db.SaveChangesAsync();
+        }
 
         // Seller user
         var user = new User("dealer@carhub.com", _hasher.HashPassword("dealer123"), "PrivateSeller");

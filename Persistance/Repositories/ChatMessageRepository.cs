@@ -19,10 +19,12 @@ public class ChatMessageRepository:IChatMessageRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<ChatMessage>> GetAllMessagesAsync(Guid senderID, Guid receiverID, Guid listingID)
+    public async Task<List<ChatMessage>> GetAllMessagesAsync(Guid userID, Guid otherUserID, Guid listingID)
     {
         return await _context.ChatMessages
-            .Where(c => c.listingID == listingID && c.senderID == senderID && c.receiverID == receiverID)
+            .Where(c => c.listingID == listingID &&
+                ((c.senderID == userID && c.receiverID == otherUserID) ||
+                 (c.senderID == otherUserID && c.receiverID == userID)))
             .OrderBy(z => z.CreatedAt).ToListAsync();
     }
 
@@ -36,5 +38,25 @@ public class ChatMessageRepository:IChatMessageRepository
             message.MarkAsRead();
         }
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<ConversationRef>> GetConversationsAsync(Guid userID)
+    {
+        var sent = await _context.ChatMessages
+            .Where(m => m.senderID == userID)
+            .Select(m => new { m.listingID, other = m.receiverID })
+            .Distinct()
+            .ToListAsync();
+
+        var received = await _context.ChatMessages
+            .Where(m => m.receiverID == userID)
+            .Select(m => new { m.listingID, other = m.senderID })
+            .Distinct()
+            .ToListAsync();
+
+        return sent.Concat(received)
+            .DistinctBy(x => (x.listingID, x.other))
+            .Select(x => new ConversationRef(x.listingID, x.other))
+            .ToList();
     }
 }
