@@ -7,23 +7,31 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.11"/>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
+        <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.11" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.3" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
+        <PackageReference Include="StackExchange.Redis" Version="2.11.8" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Application\Common\" />
-      <Folder Include="Application\Features\" />
+      <Folder Include="Application\Features\Order\GetOrderByCustomerId\" />
       <Folder Include="Domain\Events\" />
-      <Folder Include="Domain\Interfaces\" />
-      <Folder Include="Infrastructure\Services\" />
-      <Folder Include="Persistance\Configurations\" />
-      <Folder Include="Persistance\Context\" />
-      <Folder Include="Persistance\Repositories\" />
       <Folder Include="WebApi\Configurations\" />
-      <Folder Include="WebApi\Controller\" />
       <Folder Include="WebApi\Extensions\" />
       <Folder Include="WebApi\Filters\" />
-      <Folder Include="WebApi\Middlewares\" />
     </ItemGroup>
 
 </Project>

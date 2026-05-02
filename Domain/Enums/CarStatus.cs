@@ -5,6 +5,6 @@ public enum CarStatus
     InStock,
     Reserved,
     Sold,
-    Dewlivered,
+    Delivered,
     Damages
 }

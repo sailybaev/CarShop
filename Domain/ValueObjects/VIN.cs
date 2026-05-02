@@ -1,4 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
 namespace CarShopFinal.Domain.Models;
+
 
 public class VIN
 {

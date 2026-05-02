@@ -1,0 +1,84 @@
+# .gitignore for a .NET / Visual Studio / Rider project
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Build outputs
+/bin/
+**/obj/
+**/out/
+
+# Publish outputs
+publish/
+artifacts/
+
+# NuGet
+*.nupkg
+packages/
+
+# Visual Studio profiler
+*.psess
+*.vsp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+coverage/
+
+# Database files
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# Rider / JetBrains caches
+*.iml
+
+# User-specific files
+*.userprefs
+*.user
+
+# Dotnet user secrets (machine-local)
+secrets.json
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Coverage / profiling
+*.coverage
+*.coveragexml
+
+# Temporary files
+*.tmp
+*.temp
+
+# npm / node (if present)
+node_modules/
+
+# Ignore build artifacts for published single-file apps
+*.exe
+*.dll
+*.pdb
+
+# End of file
+/bin/

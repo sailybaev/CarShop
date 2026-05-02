@@ -24,49 +24,94 @@ public class Order : AggregateRoot
         
         SetCreatedAt();
     }
-
+    
     public void AddItem(Guid CarId, Money Price)
     {
         if (Status != OrderStatus.Pending)
         {
-            throw new InvalidOperationException("Cannot add an order to a pending order");
+            throw new InvalidOperationException("Cannot add an order item to a paid/delivered/cancelled/refunded order");
         }
+        var newItem = new OrderItem(CarId, Price);
+        _orderItems.Add(newItem);
+        SetUpdatedAt();
+        
     }
 
     public Money GetTotal()
     {
-        // return _orderItems.Select(i => i.price).Aggregate((total, price) => total.Amount + price.Amount);
-        //TODO: LINQ
-        return new Money(1 , "USD");
+        if (_orderItems.Count == 0)
+        {
+            return new Money(0, "USD");
+        }
+
+        var totalAmount = _orderItems.Sum(i=>i.price.Amount);
+
+        return new Money(totalAmount , _orderItems[0].price.Currency);
+    }
+    
+
+    public void MarkAsReserved()
+    {
+        if (Status != OrderStatus.Pending)
+        {
+            throw new InvalidOperationException($"Order with status {Status} cannot be reserved.");
+        }
+
+        Status = OrderStatus.Reserved;
+        SetUpdatedAt();
     }
 
     public void Cancel()
     {
-        if (Status != OrderStatus.Delivered)
+        if (Status == OrderStatus.Delivered)
         {
             throw new InvalidOperationException("Delivered orders can not be cancelled.");
         }
-        
+
         Status = OrderStatus.Canceled;
         SetUpdatedAt();
     }
 
-    public void MArkUsPaid()
+    public void MarkAsPaid()
     {
-        // TODO: Implement error handler
+        if (Status != OrderStatus.Reserved)
+        {
+            throw new InvalidOperationException($"Order with status {Status} cannot be marked as paid.");
+        }
+
         Status = OrderStatus.Paid;
         SetUpdatedAt();
     }
-    
+
+    public void Deliver()
+    {
+        if (Status != OrderStatus.Paid)
+        {
+            throw new InvalidOperationException("Only paid orders can be delivered.");
+        }
+
+        Status = OrderStatus.Delivered;
+        SetUpdatedAt();
+    }
+
+    public void Refund()
+    {
+        if (Status != OrderStatus.Paid && Status != OrderStatus.Delivered)
+        {
+            throw new InvalidOperationException("Only paid or delivered orders can be refunded.");
+        }
+
+        Status = OrderStatus.Refunded;
+        SetUpdatedAt();
+    }
+
     public void Payment(PaymentItem paymentItem)
     {
         if (Status != OrderStatus.Paid)
         {
             throw new InvalidOperationException("Only paid orders can be processed for payment.");
         }
-        
+
         _paymentItems.Add(paymentItem);
     }
-    
-    
 }

@@ -2,8 +2,8 @@ namespace CarShopFinal.Domain.Enums;
 
 public enum PaymentStatus
 {
-    Penging,
+    Pending,
     Completed,
     Failed,
-    Refiunded
+    Refunded
 }

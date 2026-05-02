@@ -1,0 +1,41 @@
+using CarShopFinal.Domain.Interfaces;
+using CarShopFinal.Domain.Models;
+using StackExchange.Redis;
+
+namespace CarShopFinal.Persistance.Redis;
+
+
+public class RedisDb : IRedis
+{
+    private readonly IDatabase _db;
+    
+    public RedisDb(IConnectionMultiplexer db)
+    {
+        _db = db.GetDatabase();
+    }
+    
+    public async Task SetAsync(string key, string value, TimeSpan ttl)
+    {
+        await _db.StringSetAsync(key, value, ttl);
+    }
+
+    public async Task SetAsync(string key, TimeSpan ttl)
+    {
+        await _db.KeyExpireAsync(key, ttl);
+    }
+
+    public async Task<string?> GetAsync(string key)
+    {
+        return await _db.StringGetAsync(key);
+    }
+
+    public async Task DeleteAsync(string key)
+    {
+        await _db.KeyDeleteAsync(key);
+    }
+
+    public async Task<long> IncrementAsync(string key)
+    {
+        return await _db.StringIncrementAsync(key); 
+    }
+}
